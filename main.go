@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
-	"strings"
-	"github.com/danharasymiw/disteam/steam"
 	"os"
-)
+	"strings"
 
+	"github.com/danharasymiw/disteam/steam"
+)
 
 func main() {
 	key := os.Getenv("STEAM_KEY")
@@ -17,14 +17,12 @@ func main() {
 	fmt.Println(getCommonGames(os.Args[1:], key))
 }
 
-
 func getCommonGames(usernames []string, key string) string {
 
 	steamIds := make([]string, 0, len(usernames))
-	unfoundUsers := make(map[string] bool)
+	unfoundUsers := make(map[string]bool)
 
 	// try and find people
-
 	for _, username := range usernames {
 		steamId, err := usernameToSteamId(username, key)
 
@@ -34,7 +32,7 @@ func getCommonGames(usernames []string, key string) string {
 			unfoundUsers[username] = true
 		}
 
-		for unfoundUser, _:= range unfoundUsers {
+		for unfoundUser, _ := range unfoundUsers {
 			for _, steamId := range steamIds {
 				foundSteamId := checkFriendsForUser(steamId, unfoundUser)
 
@@ -50,7 +48,7 @@ func getCommonGames(usernames []string, key string) string {
 			for user, _ := range unfoundUsers {
 				output += user + ", "
 			}
-			fmt.Println(output[:len(output) - 2])
+			fmt.Println(output[:len(output)-2])
 		}
 	}
 
@@ -61,7 +59,7 @@ func getCommonGames(usernames []string, key string) string {
 	return fmt.Sprintf("There are %d games in common: %s", len(commonGames), gamesString)
 }
 
-func checkFriendsForUser(steamId string, unfoundName string) (string) {
+func checkFriendsForUser(steamId string, unfoundName string) string {
 	// get friends
 	// check each friends persona name
 	// if we find a match return the steam id, else 0
@@ -98,7 +96,7 @@ func findIntersection(allGames [][]string) []string {
 func getAllUsersGames(steamIds []string, key string) [][]string {
 
 	count := 0
-	allGames  := make([][]string, len(steamIds))
+	allGames := make([][]string, len(steamIds))
 
 	for _, steamId := range steamIds {
 		userGames, err := getOwnedGameNames(steamId, key)
@@ -115,14 +113,13 @@ func getAllUsersGames(steamIds []string, key string) [][]string {
 	return allGames[:count]
 }
 
-func getOwnedGameNames(steamId string, key string) ([]string, error){
+func getOwnedGameNames(steamId string, key string) ([]string, error) {
 	games, _ := steam.GetOwnedGames(steamId, key)
 
 	var names = make([]string, games.Count)
 	for index, game := range games.Games {
-	     names[index] = game.Name
+		names[index] = game.Name
 	}
-
 
 	return names, nil
 }

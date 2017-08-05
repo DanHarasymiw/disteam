@@ -1,10 +1,10 @@
 package steam
 
 import (
-	"net/http"
-	"fmt"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
+	"net/http"
 )
 
 type VanityUrlJson struct {
@@ -12,7 +12,7 @@ type VanityUrlJson struct {
 }
 
 type VanityUrlResponseJson struct {
-	Success int `json:"success"`
+	Success int    `json:"success"`
 	SteamID string `json:"steamid"`
 }
 
@@ -36,14 +36,12 @@ func ResolveVanityUrl(username, key string) (VanityUrlResponseJson, error) {
 	return vanityUrl.Response, nil
 }
 
-
-
 type GetOwnedGamesJson struct {
 	Response GetOwnedGamesResponseJson `json:"response"`
 }
 
 type GetOwnedGamesResponseJson struct {
-	Count int `json:"game_count"`
+	Count int        `json:"game_count"`
 	Games []GameJson `json:"games"`
 }
 
